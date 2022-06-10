@@ -4,28 +4,18 @@ import java.util.List;
 public class Tree {
 
     private List<Blob>blobs;
-    private List<String>blob_name;
     private List<Tree>trees;
+    private List<String>blob_name;
     private List<String>tree_name;
-    private int hash;
-
 
     public Tree(){
         blobs = new ArrayList<>();
         trees = new ArrayList<>();
         blob_name = new ArrayList<>();
         tree_name = new ArrayList<>();
-        hash = 0;
 
     }
 
-    public void setHash(int hash){
-        this.hash = hash;
-    }
-
-    public int getHash(){
-        return this.hash;
-    }
 
     public void addBlob(Blob blob, String name){ //add blob object from staging area to tree object
         blobs.add(blob);

@@ -1,40 +1,24 @@
 
-public class Commit {
+public final class Commit {
     
-    private String message;
-    private String author;
-    private String commiter;
-    private String date;
-    private Tree tree;
-    private int hash;
-    private Commit child;
+    private final String message;
+    private final String author;
+    private final String commiter;
+    private final String date;
+    private final Tree tree;
+    private final Commit prev;
 
-    public Commit(Tree tree, String message, String author, String commiter, String date){
+    public Commit(Tree tree, String message, String author, String commiter, String date, Commit prev){
         this.tree = tree;
-
         this.message = message;
         this.author = author;
         this.commiter = commiter;
         this.date = date;
-        this.hash = 0;
-        child = null;
-        
+        this.prev = prev;
     }
 
-    public void setHash(int hash){
-        this.hash = hash;
-    }
-
-    public int getHash(){
-        return this.hash;
-    }
-
-    public void setChild(Commit child){
-        this.child = child;
-    }
-
-    public Commit getChild(){
-        return this.child;
+    public Commit getPrev(){
+        return this.prev;
     }
 
     public String getAuthor(){
@@ -50,11 +34,10 @@ public class Commit {
     }
 
     public void catFile(){
-        System.out.println("tree "+tree.getHash());
+        System.out.println("tree "+tree.hashCode());
         System.out.println("author "+author);
         System.out.println("commiter "+commiter);
         System.out.println(message);
-
     }
 
 }
