@@ -8,7 +8,7 @@ public final class Commit {
     private final Tree tree;
     private final Commit prev;
 
-    public Commit(Tree tree, String message, String author, String commiter, String date, Commit prev){
+    public Commit(Tree tree, String message, String author, String commiter, String date, Commit prev) {
         this.tree = tree;
         this.message = message;
         this.author = author;
@@ -31,6 +31,10 @@ public final class Commit {
 
     public String getMessage(){
         return this.message;
+    }
+
+    public Tree getTree() throws CloneNotSupportedException{
+        return this.tree;
     }
 
     public void catFile(){

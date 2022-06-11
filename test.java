@@ -1,7 +1,10 @@
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         /*-----------Blob------------- */
         String content1 = "Version 1"; //echo 'Version 1' > test.txt
         Blob blob = new Blob(content1);
@@ -24,11 +27,14 @@ public class test {
 
 
         /*------------Tree-------------*/
-        System.out.println();        
+        System.out.println();      
+        HashMap<String, Blob>blobs1 = new HashMap<>();
+        HashMap<String, Tree>trees1 = new HashMap<>();
+        blobs1.put("test.txt", blob);
         System.out.println("git write-tree");//write the content in staging area to a tree object
+        
         //create a tree object based on files in staging area
-        Tree tree = new Tree();
-        tree.addBlob(blob, "test.txt"); 
+        Tree tree = new Tree(blobs1, trees1);
         System.out.println(tree.hashCode());//return hash value
 
         System.out.println("git cat-file -p");//check tree content
@@ -39,22 +45,28 @@ public class test {
         String newContent = "new file";
         Blob newBlob = new Blob(newContent);
 
+        HashMap<String, Blob>blobs2 = new HashMap<>();
+        HashMap<String, Tree>trees2 = new HashMap<>();
+        blobs2.put("new.txt", newBlob);
+        blobs2.put("test.txt", blob2);
+
         System.out.println("git write-tree"); //write files in staging area into tree object
         //create a new tree object
-        Tree newTree = new Tree();
-        newTree.addBlob(newBlob, "new.txt");
-        newTree.addBlob(blob2, "test.txt");
+        Tree newTree = new Tree(blobs2, trees2);
         System.out.println(newTree.hashCode());
         System.out.println("git cat-file -p");//check new tree content
         newTree.catFile();
 
+        HashMap<String, Blob>blobs3 = new HashMap<>();
+        HashMap<String, Tree>subTree = new HashMap<>();
+        subTree.put("bak", tree);
+        blobs3.put("new.txt", newBlob);
+        blobs3.put("test.txt", blob2);
+
         //git read-tree: read tree object to staging area
         //git write-tree: write tree object in staging area into new tree object
-        System.out.println("git write-tree"); 
-        Tree superTree = new Tree();
-        superTree.addTree(tree, "bak");
-        superTree.addBlob(newBlob, "new.txt");
-        superTree.addBlob(blob2, "test.txt");
+        System.out.println("git write-tree");
+        Tree superTree = new Tree(blobs3, subTree);
         System.out.println("git cat-file -p");//check tree content
         superTree.catFile();
 
@@ -92,6 +104,19 @@ public class test {
             cur = cur.getPrev();
         }
 
+        //superTree.getTrees().get("bak").catFile();
+
+        //test tree immutability | output should be the same
+        /*
+        System.out.println();
+        tree.catFile(); // blobs1, trees1
+        blobs1.put("new", new Blob("new test file"));
+        tree.catFile();
+        //test get
+        HashMap<String, Blob>testBlobs = tree.getBlobs();
+        testBlobs.put("new2", new Blob("new test file 2"));
+        tree.catFile();
+        */
     }
     
 }

@@ -1,14 +1,19 @@
 
-public class Blob {
+public final class Blob implements Cloneable{
     
-    private String content; 
+    private final String content; 
 
     public Blob(String content){
         this.content = content;        
     }
 
+    public String getContent(){
+        return this.content;
+    }
+
     public void catFile(){
         System.out.println(content);
     }
+
 
 }
